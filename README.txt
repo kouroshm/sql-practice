@@ -1,5 +1,7 @@
 This project has been a practice of SQL basics on a database of worlds populations by CodeCademy.
 
+To open the database file and sql file please download [DBBrowser](https://sqlitebrowser.org/)
+
 This project attempted to answer these questions from the specification of the project: 
 
 
