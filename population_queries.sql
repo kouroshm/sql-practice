@@ -1,37 +1,52 @@
--- This is the first query:
+-- How many entries in the database are from Africa?
+SELECT count(*) as 'Entries'
+FROM countries
+WHERE continent = 'Africa';
 
--- Years covered by the dataset
-SELECT DISTINCT year from population_years;
 
--- Largest population size for Gabon
-select *
-from population_years
-where population = (select max(population) from population_years
-where country = 'Gabon');
-
--- 10 Lowest Population Countries
-select country
-from population_years
-where year = 2005
-order by population ASC
-limit 10;
-
--- Countries with > 100 M population in 2010 in desc order
-SELECT DISTINCT country
+-- What was the total population of Oceania in 2005?
+SELECT SUM(population) as 'Total Population'
 FROM population_years
-WHERE population > 100 and year = 2010
-ORDER BY population DESC;
+INNER JOIN countries
+ON countries.id = population_years.country_id 
+WHERE continent = 'Oceania' AND year = 2005; 
 
--- Number of Countries with islands inside it
-SELECT count(DISTINCT country)
+
+-- What is the average population of countries in South America in 2003?
+SELECT AVG(population) as 'Average Population'
 FROM population_years
-WHERE country like '%islands%';
+INNER JOIN countries
+ON countries.id = population_years.country_id
+WHERE year = 2003 AND continent = 'South America';
 
--- Difference of population in Indonesia between years 2000 and 2010.
-SELECT DISTINCT country as 'Country', ((SELECT population from population_years where country = 'Indonesia' and year = 2010) 
-- (SELECT population FROM population_years WHERE country = 'Indonesia' and year = 2000))as 'Difference of Population'
+
+-- What country had the smallest population in 2007?
+SELECT name, MIN(population) as 'Smallest Population'
 FROM population_years
-WHERE country = 'Indonesia' ;
+INNER JOIN countries
+ON countries.id = population_years.country_id
+WHERE year = 2007;
 
 
--- Add your additional queries below:
+-- What is the average population of Poland during the time period covered by this dataset?
+SELECT name, AVG(population) as 'Average Population'
+FROM population_years
+INNER JOIN countries
+ON countries.id = population_years.country_id
+WHERE name = 'Poland';
+
+
+-- How many countries have the word "The" in their name?
+SELECT count(*) as 'Number of Countries with "The"'
+FROM countries
+WHERE name like '%The%';
+
+
+-- What was the total population of each continent in 2010?
+SELECT  SUM(population) as 'Population in 2010', continent 
+FROM population_years
+INNER JOIN countries
+ON countries.id = population_years.country_id
+WHERE year = 2010
+GROUP BY 2;
+
